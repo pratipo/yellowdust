@@ -3,7 +3,7 @@
 #define SSerialRX        10  //Serial Receive pin
 #define SSerialTX        11  //Serial Transmit pin
 
-#define SSerialTxControl 3   //RS485 Direction control
+#define SSerialTxControl 12  //RS485 Direction control
 #define RS485Transmit    HIGH
 #define RS485Receive     LOW
 
@@ -24,7 +24,6 @@ void setup() {
     pinMode(rpins[i], OUTPUT);
     digitalWrite(rpins[i], HIGH);
   }
-
 
   //init serial // arduino-rpi
   Serial.begin(9600);
@@ -74,6 +73,10 @@ void loop() {
 
       if (p > 8) {
         Serial.write(sBuffer, 9);
+        /// DEBUG
+//        for (int i =0; i<9; i++) {
+//          Serial.println(sBuffer[i]);
+//        }
       }
     }
   }

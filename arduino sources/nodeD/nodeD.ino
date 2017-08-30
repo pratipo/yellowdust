@@ -68,13 +68,13 @@ void loop() {
 
       if (digitalRead(A0) == LOW) { // hardcoded value override
         sBuffer[0] = 0;
-        sBuffer[1] = 0;
+        sBuffer[1] = 1;
         sBuffer[2] = 1;
-        sBuffer[3] = 0;
+        sBuffer[3] = 2;
         sBuffer[4] = 2;
-        sBuffer[5] = 0;
+        sBuffer[5] = 3;
         sBuffer[6] = 3;
-        sBuffer[7] = 0;
+        sBuffer[7] = 4;
         sBuffer[8] = 4;
       }
       digitalWrite(SSerialTxControl, RS485Transmit);
@@ -82,7 +82,7 @@ void loop() {
       digitalWrite(SSerialTxControl, RS485Receive);  // Disable RS485 Transmit
       
       for (int i =0; i<9; i++) {
-        Serial.print(sBuffer[i]);
+        Serial.println(sBuffer[i]);
         digitalWrite(13, !digitalRead(13));
       }
       //reset values?
