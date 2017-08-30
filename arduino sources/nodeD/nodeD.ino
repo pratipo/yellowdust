@@ -18,7 +18,7 @@ int pins[] = {5, 6, 7, 8};
 
 unsigned long duration;
 unsigned long starttime;
-unsigned long sampletime_ms = 2000;
+unsigned long sampletime_ms = 5000;
 unsigned long lowpulseoccupancy = 0;
 float ratio = 0;
 float concentration = 0;
@@ -26,6 +26,8 @@ float concentration = 0;
 
 void setup() {
   //declare pins
+  pinMode(13, OUTPUT);
+  pinMode(A0, INPUT_PULLUP);
   pinMode(SSerialTxControl, OUTPUT);
   digitalWrite(SSerialTxControl, RS485Receive);
 
@@ -61,12 +63,28 @@ void loop() {
 
     p++;
 
-    if (p > 4) {
+    if (p > 3 ) {
       p = 0; // reset counter
 
+      if (digitalRead(A0) == LOW) { // hardcoded value override
+        sBuffer[0] = 0;
+        sBuffer[1] = 0;
+        sBuffer[2] = 1;
+        sBuffer[3] = 0;
+        sBuffer[4] = 2;
+        sBuffer[5] = 0;
+        sBuffer[6] = 3;
+        sBuffer[7] = 0;
+        sBuffer[8] = 4;
+      }
       digitalWrite(SSerialTxControl, RS485Transmit);
       RS485Serial.write(sBuffer, 9); //send values
       digitalWrite(SSerialTxControl, RS485Receive);  // Disable RS485 Transmit
+      
+      for (int i =0; i<9; i++) {
+        Serial.print(sBuffer[i]);
+        digitalWrite(13, !digitalRead(13));
+      }
       //reset values?
     }
     starttime = millis();
