@@ -35,9 +35,21 @@ void setup() {
 
 }
 
-void relay(int state) {
-  for (int i = 0; i < 4; i++)
-    digitalWrite(rpins[i], !state);
+void relay(byte state) {
+  if (state==0){
+    for (int i = 0; i < 4; i++)
+      digitalWrite(rpins[i], HIGH); // OFF
+  }
+  else if (state==1){
+      digitalWrite(rpins[0], LOW); // ON
+      digitalWrite(rpins[1], HIGH);
+      digitalWrite(rpins[2], LOW); // ON
+      digitalWrite(rpins[3], HIGH);
+  }
+  else if (state==2){
+    for (int i = 0; i < 4; i++)
+      digitalWrite(rpins[i], LOW); // ON
+  }
 }
 
 void loop() {
@@ -45,12 +57,7 @@ void loop() {
   if (Serial.available()) // control leds (osc->Rpi -> Arduino)
   {
     byteReceived = Serial.read();
-    if (byteReceived == 97) {
-      relay(0); // turn leds OFF
-    }
-    else if (byteReceived == 98) {
-      relay(1); // turn leds ON
-    }
+    relay(byteReceived); // turn leds ON
   }
 
   if (RS485Serial.available())  //Look for data from dust sensors
@@ -65,7 +72,7 @@ void loop() {
     else {
       sBuffer[p++] = byteReceived;
 
-      if (p == 9) {
+      if (p > 8) {
         Serial.write(sBuffer, 9);
       }
     }
@@ -77,9 +84,5 @@ void loop() {
 //  t = millis();
 //c = analogRead(currentPin);
 // send current data ?
-
-
-////////////////////////////////////////////////////////
-
 
 

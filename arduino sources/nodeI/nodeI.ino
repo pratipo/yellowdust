@@ -39,11 +39,11 @@ void loop() {
   {
     int caverage = (int)(current/readings);
     int faverage = (int)(flow/readings);
-    Serial.write(0);
-    Serial.write(highByte(caverage));
-    Serial.write(highByte(caverage));
-    Serial.write(highByte(faverage));
-		Serial.write(highByte(faverage));
+    Serial.write((byte)0);
+    Serial.write((byte)highByte(caverage));
+    Serial.write((byte)lowByte(caverage));
+    Serial.write((byte)highByte(faverage));
+		Serial.write((byte)lowByte(faverage));
     sstart = millis();
   }
 
