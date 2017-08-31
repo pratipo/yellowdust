@@ -3,8 +3,8 @@
 #include "ofMain.h"
 #include "ofxOsc.h"
 
-//#define HOST "yellowdustB.local" //receiver address
-#define HOST "121.129.70.155"
+#define HOST "yellowdustB.local" //receiver address
+//#define HOST "121.129.70.155"
 #define RPORT 15001
 #define SPORT 15000
 
