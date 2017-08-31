@@ -37,6 +37,8 @@ class ofApp : public ofBaseApp{
 		ofxOscSender sender;
 
 		// SERIAL
+		unsigned char prevByte;
+		unsigned char inByte;
 		int			bpos;
 		unsigned char dustbuffer[8];			// a string needs a null terminator, so we need 3 + 1 bytes
 		ofSerial serial;
