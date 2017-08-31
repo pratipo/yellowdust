@@ -19,7 +19,7 @@ void setup() {
   digitalWrite(relaypin, HIGH);
 
   Serial.begin(9600);
-  Serial.println("NodeSensors");
+  Serial.println("Node Interior");
 
   astart = millis();//get the current time;
   sstart = millis();//get the current time;
@@ -49,7 +49,7 @@ void loop() {
 
   if (Serial.available()){
     byte rstate = Serial.read();
-    digitalWrite(relaypin, !rstate);
+    digitalWrite(relaypin, !(rstate));
   }
 
 }
