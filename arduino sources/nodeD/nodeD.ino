@@ -10,7 +10,7 @@
 SoftwareSerial RS485Serial(SSerialRX, SSerialTX); // RX, TX
 
 unsigned int values[] = {0, 0, 0, 0}; // 4xint
-byte sBuffer[] = {0, 0, 0, 0, 0, 0, 0, 0, 0}; // token byte + 4x2*byte
+byte sBuffer[] = {255, 255, 0, 0, 0, 0, 0, 0, 0, 0}; // token byte + 4x2*byte
 ////
 
 int p = 0;
@@ -58,8 +58,8 @@ void loop() {
     Serial.print(" : "); Serial.print(values[p]);
     Serial.println(" pcs/0.01cf\n");
     //convert to bytes
-    sBuffer[2 * p + 1] = highByte(values[p]);
-    sBuffer[2 * p + 2] = lowByte(values[p]);
+    sBuffer[2 * p + 2] = highByte(values[p]);
+    sBuffer[2 * p + 3] = lowByte(values[p]);
 
     p++;
 
@@ -67,21 +67,22 @@ void loop() {
       p = 0; // reset counter
 
       if (digitalRead(A0) == LOW) { // hardcoded value override
-        sBuffer[0] = 0;
-        sBuffer[1] = 1;
+        sBuffer[0] = 255;
+        sBuffer[1] = 255;
         sBuffer[2] = 1;
-        sBuffer[3] = 2;
+        sBuffer[3] = 1;
         sBuffer[4] = 2;
-        sBuffer[5] = 3;
+        sBuffer[5] = 2;
         sBuffer[6] = 3;
-        sBuffer[7] = 4;
+        sBuffer[7] = 3;
         sBuffer[8] = 4;
+        sBuffer[9] = 4;
       }
       digitalWrite(SSerialTxControl, RS485Transmit);
       RS485Serial.write(sBuffer, 9); //send values
       digitalWrite(SSerialTxControl, RS485Receive);  // Disable RS485 Transmit
       
-      for (int i =0; i<9; i++) {
+      for (int i =0; i<10; i++) {
         Serial.println(sBuffer[i]);
         digitalWrite(13, !digitalRead(13));
       }

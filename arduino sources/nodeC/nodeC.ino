@@ -8,9 +8,10 @@
 #define RS485Receive     LOW
 
 SoftwareSerial RS485Serial(SSerialRX, SSerialTX); // RX, TX
-byte sBuffer[] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
-int p = 1;
 byte byteReceived = 0;
+int protocol = 0;
+int p = 0;
+byte sBuffer[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 int rpins[] = {6, 7, 8, 9};
 
@@ -65,14 +66,23 @@ void loop() {
     //Serial.print("sensor data: ");
     //Serial.println(byteReceived);
 
-    if (byteReceived == 0) {
-      p = 1;
+    if (byteReceived == 255) {
+      protocol++;
+      if (protocol == 2){
+        protocol = 0;
+        p = 2;
+      }
     }
-    else {
+    else{
+      protocol = 0;
+    }
+    
+    if (p >= 2){
       sBuffer[p++] = byteReceived;
 
-      if (p > 8) {
-        Serial.write(sBuffer, 9);
+      if (p > 9) {
+        Serial.write(sBuffer, 10);
+        p=0;
         /// DEBUG
 //        for (int i =0; i<9; i++) {
 //          Serial.println(sBuffer[i]);
@@ -82,6 +92,7 @@ void loop() {
   }
 }
 
+/*
 // read current
 //if (millis - t > 500)
 //  t = millis();
@@ -89,3 +100,9 @@ void loop() {
 // send current data ?
 
 
+if 255
+  p 0->1
+
+
+
+*/
