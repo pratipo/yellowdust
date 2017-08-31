@@ -43,8 +43,8 @@ void relay(byte state) {
   else if (state==1){
       digitalWrite(rpins[0], LOW); // ON
       digitalWrite(rpins[1], HIGH);
-      digitalWrite(rpins[2], LOW); // ON
-      digitalWrite(rpins[3], HIGH);
+      digitalWrite(rpins[2], HIGH); // L
+      digitalWrite(rpins[3], LOW);  // H
   }
   else if (state==2){
     for (int i = 0; i < 4; i++)
@@ -63,10 +63,11 @@ void loop() {
   if (RS485Serial.available())  //Look for data from dust sensors
   {
     byteReceived = RS485Serial.read();    // Read received byte
+    Serial.write(byteReceived);
     //Serial.print("sensor data: ");
     //Serial.println(byteReceived);
 
-    if (byteReceived == 255) {
+    /*if (byteReceived == 255) {
       protocol++;
       if (protocol == 2){
         protocol = 0;
@@ -88,7 +89,7 @@ void loop() {
 //          Serial.println(sBuffer[i]);
 //        }
       }
-    }
+    }*/
   }
 }
 
