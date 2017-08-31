@@ -10,9 +10,12 @@ void ofApp::setup(){
 	sender.setup(HOST, SPORT);
 	receiver.setup(RPORT);
 
+	prevByte = (unsigned char) 0;
+	inByte =  (unsigned char) 0;
+
 	serial.listDevices();
 	vector <ofSerialDeviceInfo> deviceList = serial.getDeviceList();
-	serial.setup("ttyUSB0", 9600);
+	serial.setup(0, 9600); // "ttyUSB0"
 
 	bpos = -1;
 }
@@ -35,14 +38,16 @@ void ofApp::update(){
 	if(serial.available()>0) {
 		cout <<  "incoming serial" << endl;
 
-		if (bpos>=0){
-			dustbuffer[bpos++] = (unsigned char)serial.readByte();
-		}
-		else{
-			if ((unsigned char)serial.readByte()==0)
-				bpos = 0;
-		}
-		if (bpos>7){ // ready to send dust readings
+		prevByte = inByte;
+		inByte = (unsigned char)serial.readByte();
+		if (prevByte == 255 && inByte == 255)
+			bpos = 0;
+		else if (bpos == -1 && inByte == 255)
+			bpos = -1;
+		else
+			dustbuffer[bpos++] = inByte;
+
+		if (bpos==8){
 			ofxOscMessage m;
 			m.setAddress("/dust");
 			m.addIntArg(int( (unsigned char)(dustbuffer[0]) << 8 | (unsigned char)(dustbuffer[1]) ));
