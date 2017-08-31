@@ -19,7 +19,7 @@ void setup() {
   digitalWrite(relaypin, HIGH);
 
   Serial.begin(9600);
-  Serial.println("Node Interior");
+  //Serial.println("Node Interior");
 
   astart = millis();//get the current time;
   sstart = millis();//get the current time;
@@ -39,7 +39,8 @@ void loop() {
   {
     int caverage = (int)(current/readings);
     int faverage = (int)(flow/readings);
-    Serial.write((byte)0);
+    Serial.write((byte)255);
+    Serial.write((byte)255);
     Serial.write((byte)highByte(caverage));
     Serial.write((byte)lowByte(caverage));
     Serial.write((byte)highByte(faverage));
