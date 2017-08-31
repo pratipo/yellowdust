@@ -41,10 +41,10 @@ void relay(byte state) {
       digitalWrite(rpins[i], HIGH); // OFF
   }
   else if (state==1){
-      digitalWrite(rpins[0], LOW); // ON
-      digitalWrite(rpins[1], HIGH);
-      digitalWrite(rpins[2], HIGH); // L
-      digitalWrite(rpins[3], LOW);  // H
+      digitalWrite(rpins[0], LOW); // ARCO 1
+      digitalWrite(rpins[1], LOW); // ARCO 2
+      digitalWrite(rpins[2], HIGH); // ARCO 2
+      digitalWrite(rpins[3], HIGH);  // ARCO 1
   }
   else if (state==2){
     for (int i = 0; i < 4; i++)
